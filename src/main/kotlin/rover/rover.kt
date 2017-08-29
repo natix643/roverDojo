@@ -6,10 +6,8 @@ import rover.Move.*
 data class Position(val x: Int, val y: Int, val direction: Direction) {
 
     fun moveByMany(moves: String): Position =
-        moves.toCharArray().fold(this) { accumulator, moveChar ->
-            val move = Move.parse(moveChar.toString())
-            accumulator.moveByOne(move)
-        }
+        moves.map { Move.parse(it) }
+            .fold(this) { acc, move -> acc.moveByOne(move) }
 
     fun moveByOne(move: Move): Position {
         val (newX, newY) = changeCoordinates(move)
@@ -51,11 +49,11 @@ enum class Move {
     LEFT, RIGHT, FORWARD;
 
     companion object {
-        fun parse(s: String): Move = when (s) {
-            "L" -> LEFT
-            "R" -> RIGHT
-            "F" -> FORWARD
-            else -> throw IllegalArgumentException(s)
+        fun parse(c: Char): Move = when (c) {
+            'L' -> LEFT
+            'R' -> RIGHT
+            'F' -> FORWARD
+            else -> throw IllegalArgumentException(c.toString())
         }
     }
 }

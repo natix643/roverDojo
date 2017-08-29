@@ -41,19 +41,15 @@ class roverTest extends Specification {
     }
 
     @Unroll
-    "should not turn from #oldDirection"() {
+    "should not turn from #direction"() {
         given:
-        def position = new Position(0, 0, oldDirection)
+        def position = new Position(0, 0, direction)
 
         expect:
-        position.moveByOne(FORWARD).direction == newDirection
+        position.moveByOne(FORWARD).direction == direction
 
         where:
-        oldDirection | newDirection
-        NORTH        | NORTH
-        EAST         | EAST
-        WEST         | WEST
-        SOUTH        | SOUTH
+        direction << [NORTH, EAST, WEST, SOUTH]
     }
 
     @Unroll
@@ -73,19 +69,19 @@ class roverTest extends Specification {
     }
 
     @Unroll
-    def "should move by many '#movements'"() {
+    def "should move by many '#moves'"() {
         given:
         def position = new Position(0, 0, NORTH)
 
         expect:
-        position.moveByMany(movements) == new Position(x, y, direction)
+        position.moveByMany(moves) == new Position(newX, newY, newDirection)
 
         where:
-        movements  | x | y  | direction
-        "LFLFLFLF" | 0 | 0  | NORTH
-        "FFF"      | 0 | 3  | NORTH
-        "RFF"      | 2 | 0  | EAST
-        "RR"       | 0 | 0  | SOUTH
-        "RFRFRF"   | 0 | -1 | WEST
+        moves      | newX | newY | newDirection
+        "LFLFLFLF" | 0    | 0    | NORTH
+        "FFF"      | 0    | 3    | NORTH
+        "RFF"      | 2    | 0    | EAST
+        "RR"       | 0    | 0    | SOUTH
+        "RFRFRF"   | 0    | -1   | WEST
     }
 }
